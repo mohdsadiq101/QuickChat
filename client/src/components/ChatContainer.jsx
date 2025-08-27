@@ -4,8 +4,10 @@ import { formatMessageTime } from '../lib/utils';
 import { ChatContext } from '../../context/ChatContext';
 import { AuthContext } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
-// import { Picker } from 'emoji-mart';
-// import 'emoji-mart/css/emoji-mart.css';
+import EmojiPicker from "emoji-picker-react";
+import { MdOutlineEmojiEmotions } from "react-icons/md";
+import { FaRegImage } from "react-icons/fa6";
+
 
 const ChatContainer = () => {
 
@@ -17,7 +19,7 @@ const ChatContainer = () => {
   const scrollEnd = useRef();
 
   const [input, setInput] = useState('');
-  // const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   // Handle sending messages
   const handleSendMessage = async (e) => {
@@ -94,12 +96,32 @@ const ChatContainer = () => {
 
       {/* -------- Bottom Area -------- */}
       <div className='absolute bottom-0 left-0 right-0 flex items-center gap-3 p-3'>
-        <div className='flex-1 flex items-center bg-gray-100/12 px-3 rounded-full'>
-          <input onChange={(e) => setInput(e.target.value)} value={input} onKeyDown={(e) => e.key === 'Enter' ? handleSendMessage(e) : null} type="text" placeholder='Send Message' className='flex-1 text-sm p-3 border-none rounded-lg outline-none text-white placeholder-gray-400' />
-          <input onChange={handleSendImage} type="file" id='image' accept='image/png, image/jpeg' hidden/>
-          <label htmlFor="image">
-            <img src={assets.gallery_icon} alt="attach" className='w-5 mr-2 cursor-pointer' />
+        <div className='flex-1 flex items-center bg-gray-100/12 px-3 rounded-full gap-3'>
+          <input
+            onChange={(e) => setInput(e.target.value)}
+            value={input}
+            onKeyDown={(e) => e.key === 'Enter' ? handleSendMessage(e) : null}
+            type="text"
+            placeholder='Send Message'
+            className='flex-1 text-sm p-3 border-none rounded-lg outline-none text-white placeholder-gray-400'
+          />
+
+          <button type="button" onClick={() => setShowEmojiPicker(!showEmojiPicker)} className="text-gray-400
+          focus:outline-none transition-all">
+            <MdOutlineEmojiEmotions size={23} className="text-2xl"/>
+          </button>
+
+          {showEmojiPicker && (
+            <div className="absolute bottom-16 right-0 z-50">
+              <EmojiPicker onEmojiClick={(emoji) => setInput(input + emoji.emoji)} />
+            </div>
+          )}
+
+          <input onChange={handleSendImage} type="file" id="image" accept="image/png, image/jpeg" hidden />
+          <label htmlFor="image" className="cursor-pointer text-gray-400">
+            <FaRegImage size={20}  />
           </label>
+
         </div>
         <img onClick={handleSendMessage} src={assets.send_button} alt="send" className='w-7 cursor-pointer' />
       </div>

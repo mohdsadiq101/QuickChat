@@ -63,10 +63,12 @@ export const checkAuth = (req, res) => {
 // Controller to update user profile details
 export const updateProfile = async (req, res) => {
     try {
-        const { profilePic, bio, fullName } = req.body;
+        const { profilePic, bio, fullName } = req.body || {};
         const userId = req.user._id;
 
-        let updateData = { bio, fullName };
+        let updateData = {};
+        if (bio) updateData.bio = bio;
+        if (fullName) updateData.fullName = fullName;
         if (profilePic) updateData.profilePic = profilePic;
 
         const updatedUser = await User.findByIdAndUpdate(userId, updateData, { new: true });
