@@ -67,9 +67,17 @@ export const updateProfile = async (req, res) => {
         const userId = req.user._id;
 
         let updateData = {};
-        if (bio) updateData.bio = bio;
-        if (fullName) updateData.fullName = fullName;
-        if (profilePic) updateData.profilePic = profilePic;
+
+        if (bio !== undefined) updateData.bio = bio;
+        if (fullName !== undefined) updateData.fullName = fullName;
+
+        if (profilePic !== undefined && profilePic !== "") {
+            const uploadResponse = await cloudinary.uploader.upload(profilePic, {
+                folder: "chat_app_profiles",
+                resource_type: "image"
+            });
+            updateData.profilePic = uploadResponse.secure_url;
+        }
 
         const updatedUser = await User.findByIdAndUpdate(userId, updateData, { new: true });
         if (!updatedUser) {
@@ -78,7 +86,7 @@ export const updateProfile = async (req, res) => {
 
         res.json({ success: true, user: updatedUser, message: "Profile updated successfully" });
     } catch (error) {
-        console.log(error.message);
+        console.error("Update profile error:", error.message);
         res.json({ success: false, message: "Internal server error" });
     }
 };
