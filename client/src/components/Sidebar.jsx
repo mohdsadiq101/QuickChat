@@ -3,6 +3,7 @@ import assets from '../assets/assets'
 import { useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../context/AuthContext';
 import { ChatContext } from '../../context/ChatContext';
+import { LuUsers } from "react-icons/lu";
 
 const Sidebar = () => {
 
@@ -24,7 +25,8 @@ const Sidebar = () => {
     <div className={`bg-[#8185B2]/10 h-full p-5 rounded-r-xl overflow-y-auto hide:scrollbar text-white ${selectedUser ? "max-md:hidden" : ''}`}>
       <div className='pb-5'>
         <div className='flex justify-between items-center'>
-            <img src={assets.logo} alt="logo" className='max-w-40'/>
+           <LuUsers size={24} />
+           <div className='text-lg font-semibold'>Chats</div>
             <div className="relative py-2 group">
                 <img src={assets.menu_icon} alt="Menu" className='max-h-5 cursor-pointer'/>
                 <div className='absolute top-full right-0 z-20 w-32 p-5 rounded-md bg-[#282142] border border-gray-600 text-gray-100 
@@ -37,7 +39,7 @@ const Sidebar = () => {
             </div>
         </div>
 
-        <div className='bg-[#282142] rounded-full flex items-center gap-2 py-3 px-4 mt-5'>
+        <div className='bg-transparent rounded-full flex items-center border border-white/20 gap-2 py-3 px-4 mt-5 hover:bg-white/5 transition-all duration-300'>
             <img src={assets.search_icon} alt="Search" className='w-3' />
             <input onChange={(e)=> setInput(e.target.value)} type="text" className='bg-transparent border-none outline-none text-white text-xs placeholder-[#c8c8c8] flex-1' placeholder='Search User...' />
         </div>

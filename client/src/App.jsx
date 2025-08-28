@@ -5,17 +5,25 @@ import LoginPage from './pages/LoginPage'
 import ProfilePage from './pages/ProfilePage'
 import { Toaster } from 'react-hot-toast'
 import { AuthContext } from '../context/AuthContext'
+import Header from './components/Header'
 
 const App = () => {
   const { authUser } = useContext(AuthContext); 
+
   return (
-    <div className="bg-[url('/bgimg2.jpg')] bg-contain">
+    // full page container
+    <div className="bg-[url('/bgimg3.jpg')] bg-cover min-h-screen flex flex-col">
       <Toaster />
-      <Routes>
-        <Route path="/" element={authUser ? <HomePage /> : <Navigate to="/login" />} />
-        <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to="/" />} />
-        <Route path="/profile" element={authUser ? <ProfilePage /> : <Navigate to="/login" />} />
-      </Routes>
+
+      {authUser && <Header />}
+
+      <div className="flex-1 overflow-hidden">
+        <Routes>
+          <Route path="/" element={authUser ? <HomePage /> : <Navigate to="/login" />} />
+          <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to="/" />} />
+          <Route path="/profile" element={authUser ? <ProfilePage /> : <Navigate to="/login" />} />
+        </Routes>
+      </div>
     </div>
   )
 }
