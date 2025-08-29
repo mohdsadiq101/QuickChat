@@ -2,10 +2,14 @@ import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import assets from '../assets/assets';
 import { AuthContext } from '../../context/AuthContext';
-import { IoChevronBackOutline } from "react-icons/io5";   // ✅ back arrow icon
+import { IoChevronBackOutline } from "react-icons/io5"; 
+import { TbUserEdit } from "react-icons/tb";
+import { LuUser } from "react-icons/lu";
+import { HiOutlineMail } from "react-icons/hi";
+import { LuInfo } from "react-icons/lu";
 
 const ProfilePage = () => {
-  const {authUser, updateProfile} = useContext(AuthContext);  
+  const { authUser, updateProfile } = useContext(AuthContext);
   const [selectedImg, setSelectedImg] = useState(null);
   const navigate = useNavigate();
   const [name, setName] = useState(authUser.fullName);
@@ -27,44 +31,74 @@ const ProfilePage = () => {
     };
   };
 
-  return (
-    <div className='min-h-screen bg-cover bg-no-repeat flex flex-col items-center justify-center relative'>
+   return (
+    <div className="min-h-screen flex items-center justify-center bg-transparent bg-no-repeat relative">
+      
+      <IoChevronBackOutline
+        onClick={() => navigate(-1)}
+        className="absolute top-5 left-5 text-2xl text-gray-400 cursor-pointer hover:text-white transition"
+      />
 
-      <div className='w-5/6 max-w-2xl backdrop-blur-2xl text-gray-300 border-2 border-gray-600 flex items-center justify-between max-sm:flex-col-reverse rounded-lg'>
-      <IoChevronBackOutline onClick={() => navigate(-1)} className='absolute top-5 left-5 text-2xl text-gray-400 cursor-pointer hover:text-white transition' />
-        <form onSubmit={handleSubmit} className="flex flex-col gap-5 p-10 flex-1">
-          <div className="text-center mb-6">
-            <h3 className="text-3xl font-bold text-blue-300">Profile Details</h3>
+
+      <div className="w-full max-w-[600px] bg-transparent backdrop-blur-md rounded-2xl shadow-lg p-8 text-gray-200">
+
+        <h3 className="text-3xl font-bold text-center text-blue-200">Profile</h3>
+        <p className="text-center text-gray-500 mt-1">Your profile information</p>
+
+        
+        <div className="flex justify-center mt-6 relative">
+          <img src={selectedImg ? URL.createObjectURL(selectedImg) : authUser?.profilePic || assets.logo_icon} alt="profile"
+            className="w-32 h-32 rounded-full object-cover border-3 border-blue-200"
+          />
+          <label
+            htmlFor="avatar"
+            className="absolute bottom-1 left-[55%] bg-blue-200 p-2 rounded-full cursor-pointer hover:bg-gray-400 transition"
+          >
+            <TbUserEdit className="text-gray-800" size={24} />
+            <input
+              onChange={(e) => setSelectedImg(e.target.files[0])} type="file" id="avatar" accept=".png,.jpg,.jpeg" hidden
+            />
+          </label>
+        </div>
+
+        
+        <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+          
+          <div>
+            <label htmlFor="name" className="text-sm text-gray-400">
+              <span><LuUser className="inline-block mr-2 mb-0.5" size={16}/></span>Name</label>
+            <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)}
+              className="w-full mt-0.5 p-3 rounded-lg bg-transparent border border-gray-600 focus:ring-2 focus:ring-blue-200 focus:outline-none"
+              placeholder="Enter your name"
+            />
           </div>
 
+          <div>
+          <label htmlFor="email" className="block text-sm text-gray-400">
+            <span><HiOutlineMail className="inline-block mr-2 mb-0.5" size={18}/></span>Email</label>
+          <input id="email" type="email" value={authUser.email} readOnly
+            className="w-full mt-0.5 p-3 text-gray-400 rounded-lg bg-transparent border border-gray-600 focus:ring-2 focus:ring-blue-200 focus:outline-none"
+          />
+        </div>
           
+          <div>
+            <label htmlFor="bio" className="block text-sm text-gray-400">
+              <span><LuInfo className="inline-block mr-2 mb-0.5" size={16}/></span>Bio</label>
+            <textarea id="bio" rows="3" value={bio} onChange={(e) => setBio(e.target.value)}
+              className="w-full mt-0.5 p-3 rounded-lg bg-transparent border border-gray-600 focus:ring-2 focus:ring-blue-200 focus:outline-none"
+              placeholder="Tell us about yourself..."
+            ></textarea>
+          </div>
 
-           {/* Name Field */}
-           <div className="flex flex-col gap-1">
-             <label htmlFor="name" className="text-sm font-medium text-gray-400">Name</label>
-             <input 
-               id="name" onChange={(e) => setName(e.target.value)} value={name} type="text" required placeholder="Your Name" 
-               className="p-2 border border-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500"
-            />
-           </div>
+         <div className='flex justify-center'>
+          <button type="submit"
+              className="w-[150px] bg-gradient-to-r from-blue-400 to-blue-500 text-white py-3 rounded-full font-semibold hover:opacity-70 transition"
+          >
+            Save
+          </button>
+         </div>
 
-           {/* Bio Field */}
-           <div className="flex flex-col gap-1">
-             <label htmlFor="bio" className="text-sm font-medium text-gray-400">Bio</label>
-               <textarea id="bio" onChange={(e) => setBio(e.target.value)} value={bio} rows={4} 
-               className="p-2 border border-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500" placeholder="Your bio..."></textarea>
-           </div>
-
-          {/* Submit Button */}
-          <button type="submit" className='bg-gradient-to-r from-purple-400 to-violet-600 text-white p-2 rounded-full text-lg cursor-pointer'>Save</button>
         </form>
-        <div><img className={`max-w-44 aspect-square rounded-full mx-10 max-sm:mt-10 ${selectedImg && 'rounded-full'}`} src={authUser?.profilePic || assets.logo_icon} alt="" />
-        <label htmlFor="avatar" className='flex items-center gap-3 cursor-pointer hover:opacity-80'>
-            <input onChange={(e) => setSelectedImg(e.target.files[0])} type="file" id="avatar" accept='.png, .jpg, .jpeg' hidden/>
-            <img src={selectedImg ? URL.createObjectURL(selectedImg) : assets.avatar_icon} alt="" className={`w-12 h-12 ${selectedImg && 'rounded-full'}`}/>
-            Update Profile Image
-          </label></div>
-        
       </div>
     </div>
   );

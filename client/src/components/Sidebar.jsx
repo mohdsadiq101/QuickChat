@@ -25,8 +25,8 @@ const Sidebar = () => {
     <div className={`bg-[#8185B2]/10 h-full p-5 rounded-r-xl overflow-y-auto hide:scrollbar text-white ${selectedUser ? "max-md:hidden" : ''}`}>
       <div className='pb-5'>
         <div className='flex justify-between items-center'>
-           <LuUsers size={24} />
-           <div className='text-lg font-semibold'>Chats</div>
+           <LuUsers size={24} className='text-blue-200' />
+           <div className='text-xl text-blue-200 font-semibold'>Chats</div>
             <div className="relative py-2 group">
                 <img src={assets.menu_icon} alt="Menu" className='max-h-5 cursor-pointer'/>
                 <div className='absolute top-full right-0 z-20 w-32 p-5 rounded-md bg-[#282142] border border-gray-600 text-gray-100 
@@ -45,10 +45,10 @@ const Sidebar = () => {
         </div>
       </div> 
 
-      <div className='flex flex-col'>
+      <div className='flex flex-col justify-start gap-1'>
         {filteredUsers.map((user, index) => (
             <div onClick={() => {setSelectedUser(user); setUnseenMessages(prev => ({...prev, [user._id]: 0}))}}
-            key={index} className={`relative flex items-center gap-2 p-2 pl-4 rounded cursor-pointer max-sm:text-sm ${selectedUser?._id === user._id && 'bg-[#282142]/50'}`}>
+            key={index} className={`relative flex items-center gap-2 p-2 pl-4 rounded-xl cursor-pointer max-sm:text-sm ${selectedUser?._id === user._id && 'bg-gray-700/50'}`}>
                 <img src={user?.profilePic || assets.avatar_icon} alt="" className='w-[35px] aspect-[1/1] rounded-full'/>
                 <div className='flex flex-col leading-5'>
                     <p>{user.fullName}</p>
