@@ -13,11 +13,11 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full h-15 flex items-center backdrop-blur-lg bg-white/5 border-b border-white/20 shadow-lg px-4">
+    <header className="sticky top-0 z-50 w-full h-15 flex items-center backdrop-blur-lg bg-white/5 border-b border-white/20 shadow-lg">
       <div className="w-full flex items-center justify-between px-6 py-3">
-        
-        <Link to="/" className="flex items-center gap-2">
-          <img 
+
+        <Link to="/" className="flex items-left gap-2">
+          <img
             src="/favicon.svg"
             alt="QuickChat logo" 
             className="w-8 h-8"
@@ -27,7 +27,6 @@ const Header = () => {
           </span>
         </Link>
         
-
         {authUser && (
           <div className="flex items-center gap-4">
             <Link 
